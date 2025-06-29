@@ -1,16 +1,21 @@
 rules:
   - id: insecure-sql-injection
-    languages:
-      - php
+    languages: [php]
     severity: ERROR
     message: |
-      Potential SQL Injection: avoid concatenating user input directly into SQL queries.
-      Use prepared statements or parameterized queries instead.
+      Potential SQL Injection: unchecked user input is concatenated into SQL and executed.
+      Use prepared statements or parameterized queries to avoid this vulnerability.
+    pattern-sources:
+      - pattern: $USERNAME = $_POST[...]
+      - pattern: $PASSWORD = $_POST[...]
+      - pattern-either:
+          - pattern: $USERNAME = $_GET[...]
+          - pattern: $PASSWORD = $_GET[...]
     patterns:
       - pattern: |
-          $SQL = $X + $USER_INPUT + $Y;
-      - pattern-either:
-          - pattern: |
-              $conn->query($SQL);
-          - pattern: |
-              $db->query($SQL);
+          $SQL = "... " + $USERNAME + " ... " + $PASSWORD + " ...";
+    pattern-sinks:
+      - pattern: |
+          $conn->query($SQL);
+      - pattern: |
+          $db->query($SQL);
