@@ -3,8 +3,7 @@ rules:
     languages:
       - php
     severity: ERROR
-    message: |
+    message: >
       Potential SQL Injection: avoid concatenating user input directly into SQL queries.
       Use prepared statements or parameterized queries instead.
-    patterns:
-      - pattern: $SQL = "... " + $USER_INPUT + " ...";
+    pattern: $SQL = $X + $Y + $Z;
