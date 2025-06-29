@@ -6,17 +6,6 @@ rules:
     message: |
       Potential SQL Injection: user input is concatenated into SQL and executed.
       Use prepared statements or parameterized queries to avoid this.
-    metadata:
-      cwe:
-        - "CWE-89"
-      owasp:
-        - A03:2021-Injection
-      confidence: HIGH
-      likelihood: HIGH
-      impact: HIGH
-      category: security
-      subcategory:
-        - vuln
     options:
       taint_unify_mvars: true
     pattern-sources:
@@ -29,5 +18,3 @@ rules:
     pattern-sinks:
       - pattern: |
           $conn->query($SQL);
-      - pattern: |
-          $db->query($SQL);
